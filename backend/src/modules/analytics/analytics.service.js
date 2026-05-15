@@ -61,7 +61,7 @@ export const getPollAnalyticsService = async (pollId, user) => {
         throw new Error("Poll not found")
     }
 
-    if(!user || poll.createdBy.toString() !== user.id) {
+    if (!user || poll.createdBy.toString() !== String(user.id)) {
         throw new Error("Unauthorized")
     }
 
@@ -71,6 +71,7 @@ export const getPollAnalyticsService = async (pollId, user) => {
 
     const analytics = {
         title: poll.title,
+        isPublished: poll.isPublished,
         totalResponses: responses.length,
         questions: [],
     }

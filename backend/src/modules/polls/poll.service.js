@@ -35,7 +35,7 @@ export const publishPollResultsService = async (
     }
 
     // Ownership check
-    if(poll.createdBy.toString() !== userId) {
+    if (poll.createdBy.toString() !== String(userId)) {
         throw new Error("Unauthorized")
     }
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/axios";
+import Navbar from "../../components/Navbar";
 
 function CreatePoll() {
   const navigate = useNavigate();
@@ -104,7 +105,9 @@ function CreatePoll() {
 
       alert("Poll created successfully");
 
-      navigate(`/analytics/${response.data.data._id}`);
+      const pollId = response.data.data._id;
+      localStorage.setItem("lastPollId", pollId);
+      navigate(`/analytics/${pollId}`);
     } catch (error) {
       alert(error.response?.data?.message || "Failed to create poll");
     } finally {
@@ -113,8 +116,10 @@ function CreatePoll() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-6">
-      <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/10 bg-slate-950/95 p-8 shadow-2xl ring-1 ring-slate-700/60">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+      <Navbar />
+      <div className="mx-auto max-w-3xl p-6">
+      <div className="rounded-[2rem] border border-white/10 bg-slate-950/95 p-8 shadow-2xl ring-1 ring-slate-700/60">
         <h1 className="mb-8 text-3xl font-semibold text-white">Create Poll</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -269,6 +274,7 @@ function CreatePoll() {
             {loading ? "Creating..." : "Create Poll"}
           </button>
         </form>
+      </div>
       </div>
     </div>
   );

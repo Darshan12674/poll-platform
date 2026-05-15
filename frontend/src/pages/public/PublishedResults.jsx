@@ -11,6 +11,15 @@ import {
 
 import api from "../../api/axios"
 
+const COLORS = [
+    "#6366f1",
+    "#8b5cf6",
+    "#d946ef",
+    "#ec4899",
+    "#f43f5e",
+    "#f97316",
+]
+
 function PublishedResults() {
     const { pollId } = useParams()
 
@@ -39,7 +48,7 @@ function PublishedResults() {
 
     useEffect(() => {
         fetchResults()
-    }, [])
+    }, [pollId])
 
     // Loading
 
@@ -107,7 +116,7 @@ function PublishedResults() {
                             </div>
 
                             {/* Pie Chart */}
-                            <div> 
+                            <div className="h-64">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
                                         <Pie
@@ -120,9 +129,11 @@ function PublishedResults() {
                                                 {question.options.map((_, idx) => (
                                                     <Cell
                                                         key={idx}
-                                                                               />
+                                                        fill={COLORS[idx % COLORS.length]}
+                                                    />
                                                 ))}
                                             </Pie>
+                                        <Tooltip />
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>

@@ -18,8 +18,6 @@ function Register() {
 
     const [error, setError] = useState("")
 
-    const [success, setSuccess] = useState("")
-
     // Handle input Change
     const handleChange = (e) => {
         setFormData({
@@ -35,16 +33,21 @@ function Register() {
         try {
             setLoading(true)
             setError("")
-            setSuccess("")
 
             await api.post("/auth/register", formData)
 
-            setSuccess("Registration successfull")
+            const loginResponse = await api.post("/auth/login", {
+                email: formData.email,
+                password: formData.password,
+            })
 
-            // Redirect after 1 second
-            setTimeout(() => {
-                navigate("/login")
-            }, 1000)
+            localStorage.setItem("token", loginResponse.data.data.token)
+            localStorage.setItem(
+                "user",
+                JSON.stringify(loginResponse.data.data.user)
+            )
+
+            navigate("/dashboard")
         } catch (error) {
             setError(
                 error.response?.data?.message ||
@@ -66,12 +69,6 @@ function Register() {
         {error && (
           <div className="mb-5 rounded-2xl border border-rose-300/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
             {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="mb-5 rounded-2xl border border-emerald-300/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
-            {success}
           </div>
         )}
 
